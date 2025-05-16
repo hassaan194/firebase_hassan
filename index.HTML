@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Firebase-login</title>
+        <link rel="stylesheet" href="index.css">
+        <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    </head>
+    <body>
+        <label>Username</label>
+        <br>
+        <input name = "Username" type = "text" id = "username">
+        <br>
+        <label>Password</label>
+        <br>
+        <input name = "Password"  type = "password" id = "password"> 
+        <br>
+        <p id = "text"></p>
+        <button id  = "btn">Login</button>
+        <button id  = "btn2">Create account</button>
+        
+    </body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDDUbVUvkOS25w-hW2O3kOTOtfILIQRhvk",
+            authDomain: "hassan-project-saad.firebaseapp.com",
+            projectId: "hassan-project-saad",
+            storageBucket: "hassan-project-saad.firebasestorage.app",
+            messagingSenderId: "642604790944",
+            appId: "1:642604790944:web:857838c362d35cf7ef85c5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        window.onload = function() {
+            const btn = document.getElementById("btn");
+            const text = document.getElementById("text");
+            btn.addEventListener("click", signIN_set);
+            const btn2 = document.getElementById("btn2");
+            btn2.addEventListener("click", signUP_set);
+            const user = document.getElementById("username");
+            const pass = document.getElementById("password");
+            function signIN_set(){
+                text.innerHTML = "Let us see if we know you"
+                var username = user.value;
+                var password = pass.value;
+                signIN(username,password);
+            }
+            function signUP_set(){
+                text.innerHTML = "wait we are making your account"
+                var username = user.value;
+                var password = pass.value;
+                signUP(username,password);
+            }
+        };
+        function signIN(username,password){
+        signInWithEmailAndPassword(auth,username,password)
+        .then((userCredential) => {
+            console.log("signed in",userCredential.user);
+            text.innerHTML = "Welcome back";
+        })
+        .catch((error) =>{
+            console.error("Error",error.message);
+            text.innerHTML = "Falied "+error.message;
+        });
+        }
+        function signUP(username,password){
+        createUserWithEmailAndPassword(auth,username,password)
+        .then((userCredential) => {
+            console.log("signed in",userCredential.user);
+            text.innerHTML = "Welcome we hope you use use acount for good :)";
+        })
+        .catch((error) =>{
+            console.error("Error",error.message);
+            text.innerHTML = "Falied "+error.message;
+        });
+        }
+    </script>
+</html>
